@@ -9,7 +9,8 @@ let TeamModel = require('./Models/Team')
 let PlayerModel = require('./Models/Player')
 let SoccerGameModel = require('./Models/soccerGame')
 let EventModel = require('./Models/Event')
- 
+
+SoccerGameModel.createSoccerGame('millonarios',0,'junior',0,false);
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){
@@ -20,10 +21,9 @@ io.on('connection', function(socket){
     io.emit('message2', msg);
   });
 });
-
-TeamModel.watch().on('change', function(data){
+TeamModel.TeamModel.watch().on('change', function(data){
   var datos;
-  TeamModel.find({},(err, teams)=> {
+  TeamModel.TeamModel.find({},(err, teams)=> {
     if (err) console.log(err);
     console.log(teams);
     io.emit('cambio', teams);
@@ -33,7 +33,7 @@ TeamModel.watch().on('change', function(data){
 
 //obtener todos los equipos de la base de datos
 app.get('/teams', (req, res) => {
-  TeamModel.find({},(err, teams)=> {
+  TeamModel.TeamModel.find({},(err, teams)=> {
     if (err) return handleError(err);
     console.log(teams)
     res.send(teams);
