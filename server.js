@@ -5,24 +5,12 @@ var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-let TeamModel = require('./Models/Team')
-let PlayerModel = require('./Models/players')
-let SoccerGameModel = require('./Models/soccerGame')
-let DetailMatchModel = require('./Models/detail_match')
-let TournamentResultModel = require('./Models/tournament_results')
-let TournamentStandingModel = require('./Models/tournament_standings')
+let team=require('./controllers/teams');
+let player = require('./controllers/player')
+let tournament_results = require('./controllers/tournament_results')
+let tournament_standings = require('./controllers/tournament_standings')
+let detail_match = require('./controllers/detail_match')
 
-let EventModel = require('./Models/Event')
-
-
-//DetailMatchModel.createDetailMatch("5db514321c9d4400008a9c55",'expulsado','5db4bbbe1c9d44000008cb1a',9,false);
-TournamentStandingModel.getTournamentStanding()
-  .then(docs => {
-    console.log(docs)
-  })
-  .catch(err => {
-    console.error(err)
-})
 console.log("=========RESULTADOS DE TORNEO==========")
 /* DetailMatchModel.getTournamentResult()
   .then(docs => {
@@ -49,7 +37,7 @@ io.on('connection', function(socket){
     io.emit('message2', msg);
   });
 });
-TeamModel.TeamModel.watch().on('change', function(data){
+team.TeamModel.watch().on('change', function(data){
   var datos;
   TeamModel.TeamModel.find({},(err, teams)=> {
     if (err) console.log(err);
