@@ -6,11 +6,39 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 let TeamModel = require('./Models/Team')
-let PlayerModel = require('./Models/Player')
+let PlayerModel = require('./Models/players')
 let SoccerGameModel = require('./Models/soccerGame')
+let DetailMatchModel = require('./Models/detail_match')
+let TournamentResultModel = require('./Models/tournament_results')
+let TournamentStandingModel = require('./Models/tournament_standings')
+
 let EventModel = require('./Models/Event')
 
-SoccerGameModel.createSoccerGame('millonarios',0,'junior',0,false);
+
+//DetailMatchModel.createDetailMatch("5db514321c9d4400008a9c55",'expulsado','5db4bbbe1c9d44000008cb1a',9,false);
+TournamentStandingModel.getTournamentStanding()
+  .then(docs => {
+    console.log(docs)
+  })
+  .catch(err => {
+    console.error(err)
+})
+console.log("=========RESULTADOS DE TORNEO==========")
+/* DetailMatchModel.getTournamentResult()
+  .then(docs => {
+    console.log(docs)
+  })
+  .catch(err => {
+    console.error(err)
+})
+console.log("=========JUGADORES==========")
+PlayerModel.getPlayer()
+  .then(docs => {
+    console.log(docs)
+  })
+  .catch(err => {
+    console.error(err)
+}) */
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){

@@ -1,5 +1,5 @@
 let mongoose = require('mongoose');
-const dbUrl='mongodb+srv://ejsp81:COTONIELA@cluster0-espq4.mongodb.net/bdseminario?retryWrites=true&w=majority'
+const dbUrl='mongodb+srv://ejsp81:COTONIELA@cluster0-espq4.mongodb.net/realtimesports?retryWrites=true&w=majority'
 
 class Database {
   constructor() {
