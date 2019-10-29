@@ -23,7 +23,7 @@
             <li><a href="#">${soccerGame.local_team.name} vs ${soccerGame.visitor_team.name}</a></li>`)
     }   
     function getEvents(){
-        $.get('http://localhost:3000/tournament_result/get', (data) => {
+        $.get('http://localhost:3000/tournament_results/get', (data) => {
         data.forEach(addSoccerGame);
         });
     }

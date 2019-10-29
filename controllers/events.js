@@ -1,4 +1,4 @@
-const Event = require('../Models/events').EventModel;
+const Event = require('../models/events').EventModel;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
