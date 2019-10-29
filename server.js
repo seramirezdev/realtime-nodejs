@@ -13,8 +13,10 @@ const playerRoute = require('./routes/player'); // Imports routes for the team
 const detail_matchRoute = require('./routes/detail_match'); // Imports routes for the detail_match
 const tournament_resultRoute = require('./routes/tournament_results'); // Imports routes for the tournament_results
 const tournament_standingsRoute = require('./routes/tournament_standings'); // Imports routes for the tournament_standings
+const eventRoute = require('./routes/event'); // Imports routes for the event
 
 app.use('/team', teamRoute);
+app.use('/event', eventRoute);
 app.use('/player', playerRoute);
 app.use('/detail_match', detail_matchRoute);
 app.use('/tournament_result', tournament_resultRoute);
@@ -43,7 +45,7 @@ team.Team.watch().on('change', function(data){
  
 //obtener todos los equipos de la base de datos
 app.get('/teams', (req, res) => {
-  TeamModel.TeamModel.find({},(err, teams)=> {
+  team.Team.find({},(err, teams)=> {
     if (err) return handleError(err);
     console.log(teams)
     res.send(teams);
@@ -67,6 +69,6 @@ http.listen(3000, function(){
     console.log('server is running on port :3000');
 });
 
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/index.html');
+app.get('/events', function(req, res){
+    res.sendFile(__dirname + '/events.html');
 });
