@@ -30,10 +30,8 @@
     <table class="table" id="myTable">
       <thead>
         <tr>
-          <th>Position</th>
           <th>Team</th>
-          <th>Played Game</th>
-          <th>Points</th>
+          <th>Shield</th>
         </tr>
       </thead>
       <tbody>
@@ -53,10 +51,8 @@
         function addRow(data){
           $("#myTable > tbody").append(`
             <tr>
-              <td>${data.position}</td>
               <td>${data.name}</td>
-              <td>${data.gamesPlayed}</td>
-              <td>${data.points}</td>
+              <td><img src='${data.shield}' width='80px'/></td>
             </tr>`);
         } 
        

@@ -1,4 +1,4 @@
-const DetailMatch = require('../Models/detail_match').DetailMatchModel;
+const DetailMatch = require('../models/detail_match').DetailMatchModel;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {

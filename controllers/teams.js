@@ -1,4 +1,4 @@
-const Team = require('../Models/teams').TeamModel;
+const Team = require('../models/teams').TeamModel;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
@@ -36,7 +36,7 @@ exports.get=function(req, res) {
         return reject(err)
     }        
     res.send(team)
-  })
+  }).sort({position : 1});
 }
 
 exports.team_details = function (req, res) {

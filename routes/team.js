@@ -8,7 +8,7 @@ router.get('/test', team_controller.test);
 
 router.post('/create', team_controller.createTeam);
 
-router.get('/get', team_controller.get);
+router.get('/', team_controller.get);
 
 router.get('/:id', team_controller.team_details);
 

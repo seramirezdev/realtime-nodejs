@@ -1,4 +1,4 @@
-const Player = require('../Models/players').PlayerModel;
+const Player = require('../models/players').PlayerModel;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
