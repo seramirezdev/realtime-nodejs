@@ -42,7 +42,7 @@ exports.get=function(req, res) {
         return reject(err)
     }        
     res.send(tournamentResult)
-  })
+  }).populate('local_team').populate('visitor_team')
 }
 
 

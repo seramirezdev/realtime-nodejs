@@ -5,37 +5,22 @@ var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-//let team=require('./controllers/teams');
-//let player = require('./controllers/player')
-let detail_match = require('./controllers/detail_match')
-//let tournament_standings = require('./controllers/tournament_standings')
-//let detail_match = require('./controllers/detail_match')
+let team=require('./controllers/teams');
 
-console.log("=========RESULTADOS DE TORNEO==========")
-//ejemplo llamada get
-detail_match.getDetailMatch()
-  .then(docs => {
-    console.log(JSON.stringify(docs))
-  })
-  .catch(err => {
-    console.error(err)
-}) 
+//Configuracion rutas
+const teamRoute = require('./routes/team'); // Imports routes for the team
+const playerRoute = require('./routes/player'); // Imports routes for the team
+const detail_matchRoute = require('./routes/detail_match'); // Imports routes for the detail_match
+const tournament_resultRoute = require('./routes/tournament_results'); // Imports routes for the tournament_results
+const tournament_standingsRoute = require('./routes/tournament_standings'); // Imports routes for the tournament_standings
 
-/* DetailMatchModel.getTournamentResult()
-  .then(docs => {
-    console.log(docs)
-  })
-  .catch(err => {
-    console.error(err)
-})
-console.log("=========JUGADORES==========")
-PlayerModel.getPlayer()
-  .then(docs => {
-    console.log(docs)
-  })
-  .catch(err => {
-    console.error(err)
-}) */
+app.use('/team', teamRoute);
+app.use('/player', playerRoute);
+app.use('/detail_match', detail_matchRoute);
+app.use('/tournament_result', tournament_resultRoute);
+app.use('/tournament_standing', tournament_standingsRoute);
+
+
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){

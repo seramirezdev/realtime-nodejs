@@ -41,7 +41,7 @@ exports.get=function(req, res) {
         return reject(err)
     }        
     res.send(tournamentStanding)
-  })
+  }).populate('team')
 }
 
 

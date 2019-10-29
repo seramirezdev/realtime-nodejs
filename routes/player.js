@@ -8,6 +8,8 @@ router.get('/test', player_controller.test);
 
 router.post('/create', player_controller.createPlayer);
 
+router.get('/get', player_controller.get);
+
 router.get('/:id', player_controller.player_details);
 
 router.put('/:id/update', player_controller.player_update);

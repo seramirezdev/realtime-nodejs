@@ -58,7 +58,7 @@ exports.get=function(req, res) {
     }).populate({
       path: 'detail_match',
       populate: { path: 'team' }
-    })
+    }).populate('player')
 }
 
 
