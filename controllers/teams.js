@@ -6,10 +6,7 @@ exports.test = function (req, res) {
 };
 module.exports.Team=Team;
 exports.createTeam=function(req, res){
-    let team = new Team({
-      name: req.body.name,
-      shield: req.body.shield
-    });
+    let team = new Team(req.body);
     team.save(function (err) {
       if (err) {
           return next(err);
@@ -17,6 +14,7 @@ exports.createTeam=function(req, res){
       res.send('Team created successfully')
   })
 }
+
 /* 
 exports.getTeam=function() {
   return new Promise((resolve, reject) => {

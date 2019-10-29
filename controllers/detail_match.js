@@ -6,13 +6,7 @@ exports.test = function (req, res) {
 };
 
 exports.createDetailMatch=function(req, res){
-  let detailMatch = new DetailMatch({
-    tournament_result: req.body.tournament_result,
-    type_event: req.body.type_event,
-    detail_match:req.body.detail_match,
-    time:req.body.time,
-    isLocalEvent:req.body.isLocalEvent
-  });
+  let detailMatch = new DetailMatch(req.body);
   detailMatch.save(function (err) {
       if (err) {
           return next(err);

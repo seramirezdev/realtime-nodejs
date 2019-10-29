@@ -6,14 +6,7 @@ exports.test = function (req, res) {
 };
 
 exports.createTournamentResult=function(req, res){
-  var tournamentResult = new TournamentResult({
-    local_team: req.body.local_team,
-    visitor_team: req.body.visitor_team,
-    local_goals:req.body.local_goals,
-    visitor_goals:req.body.visitor_goals,
-    is_playing:req.body.is_playing,
-    current_time:req.body.current_time
-  });
+  var tournamentResult = new TournamentResult(req.body);
   tournamentResult.save(function (err) {
     if (err) {
         return next(err);

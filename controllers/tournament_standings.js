@@ -5,13 +5,7 @@ exports.test = function (req, res) {
     res.send('Test controller TournamentStanding');
 };
 exports.createTournamentStanding=function(req, res){
-    var tournamentStanding = new TournamentStanding({
-      tournament_standing: req.body.tournament_standing,
-      type_event: req.body.type_event,
-      player:req.body.player,
-      time:req.body.time,
-      isLocalEvent:req.body.isLocalEvent
-    });
+    var tournamentStanding = new TournamentStanding(req.body);
     tournamentStanding.save(function (err) {
       if (err) {
           return next(err);

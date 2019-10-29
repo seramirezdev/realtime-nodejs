@@ -5,10 +5,7 @@ exports.test = function (req, res) {
     res.send('Test controller player');
 };
 exports.createPlayer=function(req, res){
-    let player = new Player({
-        name: req.body.name,
-        team: req.body.team
-    });
+    let player = new Player(req.body);
     player.save(function (err) {
         if (err) {
             return next(err);
