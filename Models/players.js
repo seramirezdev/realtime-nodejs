@@ -1,4 +1,5 @@
 let mongoose = require('mongoose')
+let team=require('./teams');
 
 let playerSchema = new mongoose.Schema({
     name: String,

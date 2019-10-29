@@ -1,4 +1,5 @@
 let mongoose = require('mongoose')
+let team=require('./teams');
 
 let tournament_standingSchema = new mongoose.Schema({
     team: {

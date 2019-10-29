@@ -5,13 +5,22 @@ var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-let team=require('./controllers/teams');
-let player = require('./controllers/player')
+//let team=require('./controllers/teams');
+//let player = require('./controllers/player')
 let tournament_results = require('./controllers/tournament_results')
-let tournament_standings = require('./controllers/tournament_standings')
-let detail_match = require('./controllers/detail_match')
+//let tournament_standings = require('./controllers/tournament_standings')
+//let detail_match = require('./controllers/detail_match')
 
 console.log("=========RESULTADOS DE TORNEO==========")
+//ejemplo llamada get
+tournament_results.getTournamentResult()
+  .then(docs => {
+    console.log(JSON.stringify(docs))
+  })
+  .catch(err => {
+    console.error(err)
+}) 
+
 /* DetailMatchModel.getTournamentResult()
   .then(docs => {
     console.log(docs)
@@ -37,16 +46,16 @@ io.on('connection', function(socket){
     io.emit('message2', msg);
   });
 });
-team.TeamModel.watch().on('change', function(data){
+/*  team.Team.watch().on('change', function(data){
   var datos;
-  TeamModel.TeamModel.find({},(err, teams)=> {
+  team.Team.find({},(err, teams)=> {
     if (err) console.log(err);
     console.log(teams);
     io.emit('cambio', teams);
   }).sort({position : 1});  
   console.log(new Date(),'hubo un cambio en la tabla');
-});
-
+}); */
+ 
 //obtener todos los equipos de la base de datos
 app.get('/teams', (req, res) => {
   TeamModel.TeamModel.find({},(err, teams)=> {

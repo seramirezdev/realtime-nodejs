@@ -4,6 +4,7 @@ const Team = require('../Models/teams').TeamModel;
 exports.test = function (req, res) {
     res.send('Test controller Team');
 };
+module.exports.Team=Team;
 exports.createTeam=function(name,shield){
     var team = new Team({
       name: name,
@@ -28,3 +29,25 @@ exports.getTeam=function() {
       })
   })
 }
+
+
+exports.team_details = function (req, res) {
+  Team.findById(req.params.id, function (err, team) {
+      if (err) return next(err);
+      res.send(team);
+  })
+};
+
+exports.team_update = function (req, res) {
+  Team.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, team) {
+      if (err) return next(err);
+      res.send('Team udpated.');
+  });
+};
+
+exports.team_delete = function (req, res) {
+  Team.findByIdAndRemove(req.params.id, function (err) {
+      if (err) return next(err);
+      res.send('Deleted successfully!');
+  })
+};
