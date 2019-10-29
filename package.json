@@ -2,18 +2,26 @@
   "name": "realtime-nodejs",
   "version": "1.0.0",
   "description": "Resultados en tiempo Real",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./server.js"
   },
   "author": "Elvis Sanchez",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
     "express": "^4.17.1",
     "http": "0.0.0",
+    "jquery": "^3.4.1",
     "mongoose": "^5.7.7",
+    "popper.js": "^1.16.0",
+    "pug": "^2.0.4",
     "socket.io": "^2.3.0",
     "validator": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
   }
 }

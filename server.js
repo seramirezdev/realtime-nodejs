@@ -14,11 +14,11 @@ const detail_matchRoute = require('./routes/detail_match'); // Imports routes fo
 const tournament_resultRoute = require('./routes/tournament_results'); // Imports routes for the tournament_results
 const tournament_standingsRoute = require('./routes/tournament_standings'); // Imports routes for the tournament_standings
 
-app.use('/team', teamRoute);
-app.use('/player', playerRoute);
-app.use('/detail_match', detail_matchRoute);
-app.use('/tournament_result', tournament_resultRoute);
-app.use('/tournament_standing', tournament_standingsRoute);
+app.use('/teams', teamRoute);
+app.use('/players', playerRoute);
+app.use('/detail_matchs', detail_matchRoute);
+app.use('/tournament_results', tournament_resultRoute);
+app.use('/tournament_standings', tournament_standingsRoute);
 
 
 io.on('connection', function(socket){
