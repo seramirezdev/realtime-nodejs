@@ -1,4 +1,4 @@
-const TournamentStanding = require('../Models/tournament_standings').TournamentStandingModel;
+const TournamentStanding = require('../models/tournament_standings').TournamentStandingModel;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {

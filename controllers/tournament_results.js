@@ -1,4 +1,4 @@
-const TournamentResult = require('../Models/tournament_results').TournamentResultModel;
+const TournamentResult = require('../models/tournament_results').TournamentResultModel;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
