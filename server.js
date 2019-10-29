@@ -6,6 +6,7 @@ var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+global.routServer="'http://localhost:3000";
 
 // Bootstrap 4 y librerías necesarias
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
@@ -23,6 +24,7 @@ const eventRoute = require('./routes/event'); // Imports routes for the event
 
 app.use('/teams', teamRoute);
 app.use('/players', playerRoute);
+app.use('/events', eventRoute);
 app.use('/detail_matchs', detail_matchRoute);
 app.use('/tournament_results', tournament_resultRoute);
 app.use('/tournament_standings', tournament_standingsRoute);
@@ -37,6 +39,9 @@ io.on('connection', function(socket){
   socket.on('message2', function(msg){
     //io.emit('chat message', msg);
     io.emit('message2', msg);
+  });
+  socket.on('events', function(ev){
+    io.emit('events', ev);
   });
 });
 
