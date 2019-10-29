@@ -4,23 +4,24 @@ const TournamentStanding = require('../Models/tournament_standings').TournamentS
 exports.test = function (req, res) {
     res.send('Test controller TournamentStanding');
 };
-exports.createTournamentStanding=function(tournament_standing,type_event,player,time,isLocalEvent){
+exports.createTournamentStanding=function(req, res){
     var tournamentStanding = new TournamentStanding({
-      tournament_standing: tournament_standing,
-      type_event: type_event,
-      player:player,
-      time:time,
-      isLocalEvent:isLocalEvent
+      tournament_standing: req.body.tournament_standing,
+      type_event: req.body.type_event,
+      player:req.body.player,
+      time:req.body.time,
+      isLocalEvent:req.body.isLocalEvent
     });
-    tournamentStanding.save()
-      .then(doc => {
-        console.log(doc)
-      })
-      .catch(err => {
-        console.error(err)
-    });
+    tournamentStanding.save(function (err) {
+      if (err) {
+          return next(err);
+      }
+      res.send('TournamentStanding created successfully')
+    })
 }
-exports.getTournamentStanding=function() {
+
+
+/* exports.getTournamentStanding=function() {
   return new Promise((resolve, reject) => {
       TournamentStanding.find((err, docs) => {
       if(err) {
@@ -30,7 +31,41 @@ exports.getTournamentStanding=function() {
       resolve(docs)
       }).populate('team')
   })
-} 
+}  */
+
+
+exports.get=function(req, res) {
+  TournamentStanding.find((err, tournamentStanding) => {
+    if(err) {
+        console.error(err)
+        return reject(err)
+    }        
+    res.send(tournamentStanding)
+  })
+}
+
+
+exports.tournament_standings_details = function (req, res) {
+  tournament_standings.findById(req.params.id, function (err, tournament_standings) {
+      if (err) return next(err);
+      res.send(tournament_standings);
+  })
+};
+
+exports.tournament_standings_update = function (req, res) {
+  tournament_standings.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, tournament_standings) {
+      if (err) return next(err);
+      res.send('tournament_standings udpated.');
+  });
+};
+
+exports.tournament_standings_delete = function (req, res) {
+  tournament_standings.findByIdAndRemove(req.params.id, function (err) {
+      if (err) return next(err);
+      res.send('Deleted successfully!');
+  })
+};
+
 
 //ejemplo llamada get
 /* tournament_standings.getTournamentStanding()

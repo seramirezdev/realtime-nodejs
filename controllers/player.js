@@ -4,20 +4,20 @@ const Player = require('../Models/players').PlayerModel;
 exports.test = function (req, res) {
     res.send('Test controller player');
 };
-exports.createPlayer=function(name,team){
-    var player = new Player({
-        name: name,
-        team: team
+exports.createPlayer=function(req, res){
+    let player = new Player({
+        name: req.body.name,
+        team: req.body.team
     });
-    player.save()
-      .then(doc => {
-        console.log(doc)
-      })
-      .catch(err => {
-        console.error(err)
-    });
+    player.save(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.send('Player created successfully')
+    })
 }
-exports.getPlayer=function() {
+
+/* exports.getPlayer=function() {
     return new Promise((resolve, reject) => {
         Player.find((err, docs) => {
         if(err) {
@@ -27,6 +27,16 @@ exports.getPlayer=function() {
         resolve(docs)
         }).populate('team')
     })
+}  */
+
+exports.get=function(req, res) {
+    Player.find((err, player) => {
+        if(err) {
+            console.error(err)
+            return reject(err)
+        }        
+        res.send(player)
+    }).populate('team')
 } 
 
 

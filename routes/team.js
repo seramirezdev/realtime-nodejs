@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const team_controller = require('../controllers/team');
+const team_controller = require('../controllers/teams');
 
 
 router.get('/test', team_controller.test);
 
-router.post('/create', team_controller.team_create);
+router.post('/create', team_controller.createTeam);
 
 router.get('/:id', team_controller.team_details);
 

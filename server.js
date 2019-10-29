@@ -7,13 +7,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 //let team=require('./controllers/teams');
 //let player = require('./controllers/player')
-let tournament_results = require('./controllers/tournament_results')
+let detail_match = require('./controllers/detail_match')
 //let tournament_standings = require('./controllers/tournament_standings')
 //let detail_match = require('./controllers/detail_match')
 
 console.log("=========RESULTADOS DE TORNEO==========")
 //ejemplo llamada get
-tournament_results.getTournamentResult()
+detail_match.getDetailMatch()
   .then(docs => {
     console.log(JSON.stringify(docs))
   })
@@ -46,7 +46,7 @@ io.on('connection', function(socket){
     io.emit('message2', msg);
   });
 });
-/*  team.Team.watch().on('change', function(data){
+team.Team.watch().on('change', function(data){
   var datos;
   team.Team.find({},(err, teams)=> {
     if (err) console.log(err);
@@ -54,7 +54,7 @@ io.on('connection', function(socket){
     io.emit('cambio', teams);
   }).sort({position : 1});  
   console.log(new Date(),'hubo un cambio en la tabla');
-}); */
+});
  
 //obtener todos los equipos de la base de datos
 app.get('/teams', (req, res) => {
