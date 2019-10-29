@@ -6,4 +6,4 @@ let teamSchema = new mongoose.Schema({
 });
 const TeamModel = mongoose.model('Team', teamSchema);
 
-module.exports=TeamModel;
+module.exports.TeamModel=TeamModel;
