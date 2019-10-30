@@ -3,7 +3,6 @@ const router = express.Router();
 
 const tournament_standings_controller = require('../controllers/tournament_standings');
 
-
 router.get('/test', tournament_standings_controller.test);
 
 router.post('/create', tournament_standings_controller.createTournamentStanding);

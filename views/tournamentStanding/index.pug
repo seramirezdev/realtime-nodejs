@@ -22,7 +22,7 @@ block layout-content
       getTeams();  
       $(function () {
         var socket = io();
-        socket.on('cambio', function(data){
+        socket.on('changeTournamentStand', function(data){
           $('#myTable tbody tr').remove();
             data.forEach(addRow);
           });

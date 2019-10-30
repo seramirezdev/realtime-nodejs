@@ -49,15 +49,22 @@ io.on('connection', function(socket){
   });
 });
 
-let team = require('./controllers/teams');
-team.Team.watch().on('change', function(data){
-  var datos;
-  team.Team.find({},(err, teams)=> {
+let team = require('./controllers/teams').Team;
+team.watch().on('change', function(data){
+  team.find({},(err, teams)=> {
     if (err) console.log(err);
-    console.log(teams);
     io.emit('cambio', teams);
-  }).sort({position : 1});  
-  console.log(new Date(),'hubo un cambio en la tabla');
+  }).sort({position : -1});  
+  console.log(new Date(),'Hubo un cambio en la tabla teams');
+});
+
+let tournamentStanding = require('./controllers/tournament_standings').TournamentStanding;
+tournamentStanding.watch().on('change', function(data){
+  tournamentStanding.find({},(err, tournaments)=> {
+    if (err) console.log(err);
+    io.emit('changeTournamentStand', tournaments);
+  }).sort({total_points : -1}).populate('team');
+  console.log(new Date(),'Hubo un cambio en la tabla tournament_standings');
 });
 /******************************************************/
 
