@@ -35,7 +35,7 @@ exports.get=function(req, res) {
         return reject(err)
     }        
     res.send(tournamentStanding)
-  }).populate('team')
+  }).sort({total_points:-1}).populate('team')
 }
 
 

@@ -10,13 +10,14 @@ router.post('/create', team_controller.createTeam);
 
 router.get('/get', team_controller.get);
 
-router.get('/', team_controller.get);
-
 router.get('/:id', team_controller.team_details);
 
 router.put('/:id/update', team_controller.team_update);
 
 router.delete('/:id/delete', team_controller.team_delete);
 
+router.get('/', function(req, res){
+  res.render('team/index', { title: 'Equipos' });
+});
 
 module.exports = router;

@@ -1,12 +1,16 @@
 var express = require('express');
 var app = express();
+const path = require('path');
 let mongoose = require('./dbconnect');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-global.routServer="'http://localhost:3000";
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Bootstrap 4 y librerías necesarias
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
@@ -42,7 +46,6 @@ io.on('connection', function(socket){
   });
   socket.on('events', function(ev){
     io.emit('events', ev);
-    de
   });
 });
 
