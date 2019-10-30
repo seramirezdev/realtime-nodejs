@@ -57,21 +57,21 @@ exports.get=function(req, res) {
 
 
 exports.detail_match_details = function (req, res) {
-  detail_match.findById(req.params.id, function (err, detail_match) {
+  DetailMatch.findById(req.params.id, function (err, detail_match) {
       if (err) return next(err);
       res.send(detail_match);
   })
 };
 
 exports.detail_match_update = function (req, res) {
-  detail_match.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, detail_match) {
+  DetailMatch.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, detail_match) {
       if (err) return next(err);
       res.send('detail_match udpated.');
   });
 };
 
 exports.detail_match_delete = function (req, res) {
-  detail_match.findByIdAndRemove(req.params.id, function (err) {
+  DetailMatch.findByIdAndRemove(req.params.id, function (err) {
       if (err) return next(err);
       res.send('Deleted successfully!');
   })

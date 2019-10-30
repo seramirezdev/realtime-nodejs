@@ -54,7 +54,19 @@
         var socket = io();
         $(function () {
           $( "#btnTeamL" ).click(function(e) {
-            e.preventDefault();
+            e.preventDefault();            
+            fetch('http://localhost:3000/detail_matchs/create', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+              tournament_result: $("#selSoccerGame").val(), 
+              type_event: $("#selEvent").val(), 
+              player: $("#selPlayerL").val(), 
+              time: $("#minute").val(), 
+              isLocalEvent:true})
+            });
             socket.emit('events', {
               tournament_result: $("#selSoccerGame").val(), 
               type_event: $("#selEvent").val(), 
@@ -64,6 +76,7 @@
           });  
           $( "#btnTeamV" ).click(function(e) {
             e.preventDefault();
+
             socket.emit('events', {
               tournament_result: $("#selSoccerGame").val(), 
               type_event: $("#selEvent").val(), 

@@ -42,6 +42,7 @@ io.on('connection', function(socket){
   });
   socket.on('events', function(ev){
     io.emit('events', ev);
+    de
   });
 });
 

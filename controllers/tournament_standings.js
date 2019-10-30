@@ -40,21 +40,21 @@ exports.get=function(req, res) {
 
 
 exports.tournament_standings_details = function (req, res) {
-  tournament_standings.findById(req.params.id, function (err, tournament_standings) {
+  TournamentStanding.findById(req.params.id, function (err, tournament_standings) {
       if (err) return next(err);
       res.send(tournament_standings);
   })
 };
 
 exports.tournament_standings_update = function (req, res) {
-  tournament_standings.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, tournament_standings) {
+  TournamentStanding.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, tournament_standings) {
       if (err) return next(err);
       res.send('tournament_standings udpated.');
   });
 };
 
 exports.tournament_standings_delete = function (req, res) {
-  tournament_standings.findByIdAndRemove(req.params.id, function (err) {
+  TournamentStanding.findByIdAndRemove(req.params.id, function (err) {
       if (err) return next(err);
       res.send('Deleted successfully!');
   })
