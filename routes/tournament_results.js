@@ -16,5 +16,8 @@ router.put('/:id/update', tournament_results_controller.tournament_result_update
 
 router.delete('/:id/delete', tournament_results_controller.tournament_result_delete);
 
+router.get('/', function(req, res){
+  res.render('tournamentResult/index', { title: 'Tournament Result' });
+});
 
 module.exports = router;

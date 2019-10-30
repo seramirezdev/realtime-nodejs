@@ -1,4 +1,5 @@
 const TournamentResult = require('../models/tournament_results').TournamentResultModel;
+module.exports.TournamentResult=TournamentResult;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
@@ -35,7 +36,7 @@ exports.get=function(req, res) {
         return reject(err)
     }        
     res.send(tournamentResult)
-  }).populate('local_team').populate('visitor_team')
+  }).populate(['local_team','visitor_team'])
 }
 
 
@@ -61,5 +62,13 @@ exports.tournament_result_delete = function (req, res) {
 };
 
 
-
+exports.get_is_playing=function(req, res) {
+  TournamentResult.find({ is_playing: true },(err, tournamentResult) => {
+    if(err) {
+        console.error(err)
+        return reject(err)
+    }        
+    res.send(tournamentResult)
+  })
+}
 

@@ -15,7 +15,7 @@ block layout-content
             th Shield
         tbody
     script.
-      getTeams();  
+      getData();  
       $(function () {
         var socket = io();
         socket.on('cambio', function(data){
@@ -30,8 +30,8 @@ block layout-content
           <td><img src='${data.shield}' width='80px'/></td>
           </tr>`);
         }
-      function getTeams(){
-        $.get('http://localhost:3000/teams/get', (data) => {
+      function getData(){
+        $.get('teams/get', (data) => {
           data.forEach(addRow);
         });
       }

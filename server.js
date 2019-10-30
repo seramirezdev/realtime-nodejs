@@ -17,6 +17,7 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/js', express.static(__dirname + '/node_modules/popper.js/dist'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/fontawesome', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free'));
 
 //Configuracion rutas
 const teamRoute = require('./routes/team'); // Imports routes for the team
@@ -66,6 +67,15 @@ tournamentStanding.watch().on('change', function(data){
   }).sort({total_points : -1}).populate('team');
   console.log(new Date(),'Hubo un cambio en la tabla tournament_standings');
 });
+
+let tournamentResult = require('./controllers/tournament_results').TournamentResult;
+tournamentResult.watch().on('change', function(data){
+  tournamentResult.find({},(err, tournaments)=> {
+    if (err) console.log(err);
+    io.emit('changeTournamentResult', tournaments);
+  }).sort({current_time : 1}).populate(['local_team','visitor_team']);
+  console.log(new Date(),'Hubo un cambio en la tabla tournament_results');
+});
 /******************************************************/
 
 
@@ -80,3 +90,4 @@ app.get('/', function(req, res){
 app.get('/event', function(req, res){
   res.sendFile(__dirname + '/views/events.html');
 });
+
