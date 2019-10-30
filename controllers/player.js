@@ -58,4 +58,14 @@ exports.player_delete = function (req, res) {
     })
 };
 
+exports.getByTeam=function(req, res) {
+    Player.find(({ team: req.params.id }),(err, player) => {
+        if(err) {
+            console.error(err)
+            return reject(err)
+        }        
+        res.send(player)
+    }).populate('team')
+} 
+
 

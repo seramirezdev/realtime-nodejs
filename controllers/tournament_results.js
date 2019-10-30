@@ -40,21 +40,21 @@ exports.get=function(req, res) {
 
 
 exports.tournament_result_details = function (req, res) {
-  tournament_result.findById(req.params.id, function (err, tournament_result) {
+  TournamentResult.findById(req.params.id, function (err, tournament_result) {
       if (err) return next(err);
       res.send(tournament_result);
   })
 };
 
 exports.tournament_result_update = function (req, res) {
-  tournament_result.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, tournament_result) {
+  TournamentResult.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, tournament_result) {
       if (err) return next(err);
       res.send('tournament_result udpated.');
   });
 };
 
 exports.tournament_result_delete = function (req, res) {
-  tournament_result.findByIdAndRemove(req.params.id, function (err) {
+  TournamentResult.findByIdAndRemove(req.params.id, function (err) {
       if (err) return next(err);
       res.send('Deleted successfully!');
   })
