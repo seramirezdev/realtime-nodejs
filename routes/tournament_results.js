@@ -10,6 +10,8 @@ router.post('/create', tournament_results_controller.createTournamentResult);
 
 router.get('/get', tournament_results_controller.get);
 
+router.get('/getIsPlaying', tournament_results_controller.get_is_playing);
+
 router.get('/:id', tournament_results_controller.tournament_result_details);
 
 router.put('/:id/update', tournament_results_controller.tournament_result_update);

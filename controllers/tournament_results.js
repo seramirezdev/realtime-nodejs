@@ -37,14 +37,24 @@ exports.get=function(req, res) {
     }        
     res.send(tournamentResult)
   }).populate(['local_team','visitor_team'])
-}
+};
 
 
 exports.tournament_result_details = function (req, res) {
   TournamentResult.findById(req.params.id, function (err, tournament_result) {
       if (err) return next(err);
       res.send(tournament_result);
-  })
+  }).populate(['local_team','visitor_team'])
+};
+
+exports.get_is_playing=function(req, res) {
+  TournamentResult.find({ is_playing: true },(err, tournamentResult) => {
+    if(err) {
+        console.error(err)
+        return reject(err)
+    }        
+    res.send(tournamentResult)
+  }).populate(['local_team','visitor_team'])
 };
 
 exports.tournament_result_update = function (req, res) {
@@ -62,13 +72,5 @@ exports.tournament_result_delete = function (req, res) {
 };
 
 
-exports.get_is_playing=function(req, res) {
-  TournamentResult.find({ is_playing: true },(err, tournamentResult) => {
-    if(err) {
-        console.error(err)
-        return reject(err)
-    }        
-    res.send(tournamentResult)
-  })
-}
+
 

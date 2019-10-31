@@ -41,7 +41,7 @@ exports.player_details = function (req, res) {
     Player.findById(req.params.id, function (err, player) {
         if (err) return next(err);
         res.send(player);
-    })
+    }).populate('team')
 };
 
 exports.player_update = function (req, res) {
