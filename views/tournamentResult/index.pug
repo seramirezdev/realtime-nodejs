@@ -62,6 +62,7 @@ block layout-content
             <div class="col-xs-auto text-center align-middle">
               <h2>${data.local_goals} - ${data.visitor_goals}</h2>
               <h4>min. ${data.current_time}</h4>
+              <h6><span class="badge badge-`+(data.is_playing ? 'success">en vivo' : 'secondary">finalizado')+`</span></h6>
             </div>
             <div class="col col-xs-2 text-center align-middle">
               <img src="${data.visitor_team.shield}" width="70px"/><br>
