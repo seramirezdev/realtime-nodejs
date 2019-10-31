@@ -5,45 +5,35 @@ block scripts
 
 block layout-content
 
-  div
-    .container
-      br
+  div.container
+    br
 
-      form#frmCreate.form-horizontal(method='POST', action='#', accept-charset='UTF-8')
-        .row
-          .col-xs-12.col-sm-6
-            .form-group
-              label.control-label(for='local_team') Local
-              select#local_team.form-control(name='visitor_team')
-          .col-xs-12.col-sm-6
-            .form-group
-              label.control-label(for='visitor_team') Visitante
-              select#visitor_team.form-control(name='visitor_team')
-        .row
-          .col-xs-12.col-sm-8
-            .form-group
-              button.btn.btn-primary(name='submit', type='submit', title='Guardar')
-                i.fas.fa-save(aria-hidden='true')
-                |  Guardar
-            
-      table#myTable.table
-        thead
-          tr
-            th local_team
-            th visitor_team
-            th local_goals
-            th visitor_goals
-            th is_playing
-            th current_time
-            th 
-        tbody
+    form#frmCreate.form-horizontal(method='POST', action='#', accept-charset='UTF-8')
+      .row
+        .col-xs-12.col-sm-6
+          .form-group
+            label.control-label(for='local_team') Local
+            select#local_team.form-control(name='visitor_team')
+        .col-xs-12.col-sm-6
+          .form-group
+            label.control-label(for='visitor_team') Visitante
+            select#visitor_team.form-control(name='visitor_team')
+      .row
+        .col-xs-12.col-sm-8
+          .form-group
+            button.btn.btn-primary(name='submit', type='submit', title='Guardar')
+              i.fas.fa-save(aria-hidden='true')
+              |  Guardar
+
+    div#listTournaments.jumbotron
+
     script.
       getTeams(); 
       getData(); 
       $(function () {
         var socket = io();
         socket.on('changeTournamentResult', function(data){
-          $('#myTable tbody tr').remove();
+          $('#listTournaments div').remove();
           data.forEach(addRow);
         });
 
@@ -64,19 +54,20 @@ block layout-content
         });
       });
       function addRow(data){
-        $('#myTable > tbody').append(`
-          <tr>
-          <td>${data.local_team.name}</td>
-          <td>${data.visitor_team.name}</td>
-          <td>${data.local_goals}</td>
-          <td>${data.visitor_goals}</td>
-          <td>${data.is_playing}</td>
-          <td>${data.current_time}</td>
-          <td>
-            <a class="btn btn-info btn-sm" href="tournament_results/edit/${data._id}" title="Editar">
-              <i class="fas fa-edit" aria-hidden="true"></i>
-          </a></td>
-          </tr>`);
+        $('#listTournaments').append(`<div class="row justify-content-center pb-3">
+            <div class="col col-xs-2 text-center align-middle">
+              <img src="${data.local_team.shield}" width="70px"/><br>
+              ${data.local_team.name}
+            </div>
+            <div class="col-xs-auto text-center align-middle">
+              <h2>${data.local_goals} - ${data.visitor_goals}</h2>
+              <h4>min. ${data.current_time}</h4>
+            </div>
+            <div class="col col-xs-2 text-center align-middle">
+              <img src="${data.visitor_team.shield}" width="70px"/><br>
+              ${data.visitor_team.name}
+            </div>
+          </div>`);
       }
       function getData(){
         $.get('tournament_results/get', (data) => {

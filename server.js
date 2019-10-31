@@ -70,8 +70,12 @@ tournamentStanding.watch().on('change', function(data){
 
 let tournamentResult = require('./controllers/tournament_results').TournamentResult;
 tournamentResult.watch().on('change', function(data){
+  console.log(data.current_time);
+  if(data.current_time = 90){
+    console.log(data.current_time);
+  }
   tournamentResult.find({},(err, tournaments)=> {
-    if (err) console.log(err);
+    if (err) console.error(err);
     io.emit('changeTournamentResult', tournaments);
   }).sort({current_time : 1}).populate(['local_team','visitor_team']);
   console.log(new Date(),'Hubo un cambio en la tabla tournament_results');
@@ -90,4 +94,6 @@ app.get('/', function(req, res){
 app.get('/event', function(req, res){
   res.sendFile(__dirname + '/views/events.html');
 });
+
+
 
