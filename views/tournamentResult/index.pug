@@ -1,0 +1,91 @@
+extends ../layout
+
+block scripts
+    script(src='/socket.io/socket.io.js')
+
+block layout-content
+
+  div.container
+    br
+
+    form#frmCreate.form-horizontal(method='POST', action='#', accept-charset='UTF-8')
+      .row
+        .col-xs-12.col-sm-6
+          .form-group
+            label.control-label(for='local_team') Local
+            select#local_team.form-control(name='visitor_team')
+        .col-xs-12.col-sm-6
+          .form-group
+            label.control-label(for='visitor_team') Visitante
+            select#visitor_team.form-control(name='visitor_team')
+      .row
+        .col-xs-12.col-sm-8
+          .form-group
+            button.btn.btn-primary(name='submit', type='submit', title='Guardar')
+              i.fas.fa-save(aria-hidden='true')
+              |  Guardar
+
+    div#listTournaments.jumbotron
+
+    script.
+      getTeams(); 
+      getData(); 
+      $(function () {
+        var socket = io();
+        socket.on('changeTournamentResult', function(data){
+          $('#listTournaments div').remove();
+          data.forEach(addRow);
+        });
+
+        $('#frmCreate').submit(function(e) {
+          e.preventDefault();
+          fetch('tournament_results/create', {
+            method:  'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              local_team:   $('#local_team').val(), 
+              visitor_team: $('#visitor_team').val(),
+              local_goals:  0,
+              visitor_goals:0,
+              is_playing:   true,
+              current_time: 0
+            })
+          });
+        });
+      });
+      function addRow(data){
+        $('#listTournaments').append(`<div class="row justify-content-center pb-3">
+            <div class="col col-xs-2 text-center align-middle">
+              <img src="${data.local_team.shield}" width="70px"/><br>
+              ${data.local_team.name}
+            </div>
+            <div class="col-xs-auto text-center align-middle">
+              <h2>${data.local_goals} - ${data.visitor_goals}</h2>
+              <h4>min. ${data.current_time}</h4>
+              <h6><span class="badge badge-`+(data.is_playing ? 'success">en vivo' : 'secondary">finalizado')+`</span></h6>
+            </div>
+            <div class="col col-xs-2 text-center align-middle">
+              <img src="${data.visitor_team.shield}" width="70px"/><br>
+              ${data.visitor_team.name}
+            </div>
+          </div>`);
+      }
+      function getData(){
+        $.get('tournament_results/get', (data) => {
+          data.forEach(addRow);
+        });
+      }
+      function getTeams(){
+        $.get('/teams/get', (data) => {
+          data.forEach(function(team){
+            $('#local_team').append(`<option value=${team._id}>${team.name}</option>`)
+            $('#visitor_team').append(`<option value=${team._id}>${team.name}</option>`)
+          });
+        });
+      }
+    
+  hr
+  footer
+  .container
+    div(align='center')
+      | Uniajc

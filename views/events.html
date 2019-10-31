@@ -8,41 +8,145 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+      /* The container */
+      .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 20px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      /* Hide the browser's default radio button */
+      #teamEventL{
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+      }
+      #teamEventV{
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+      }
+      
+      /* Create a custom radio button */
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+        border-radius: 50%;
+      }
+      
+      /* On mouse-over, add a grey background color */
+      .container:hover input ~ .checkmark {
+        background-color: #ccc;
+      }
+      
+      /* When the radio button is checked, add a blue background */
+      .container input:checked ~ .checkmark {
+        background-color: #2196F3;
+      }
+      
+      /* Create the indicator (the dot/circle - hidden when not checked) */
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+      
+      /* Show the indicator (dot/circle) when checked */
+      .container input:checked ~ .checkmark:after {
+        display: block;
+      }
+      
+      /* Style the indicator (dot/circle) */
+      .container .checkmark:after {
+        top: 9px;
+        left: 9px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+      }
+      </style>
 </head>
 <body>
 	<div class="container">
-    <div class="form-group col-sm-3">
-            <label for="selSoccerGame">Select a Soccer Game:</label>
-            <select class="form-control" id="selSoccerGame" name="selSoccerGame">
-            </select>
-          </div>  
-       <form action="">
+        <br>
+      <form action="">
         <div class="row">
           <div class="form-group col-sm-3">
-            <label for="selEvent">Select a Event:</label>
-            <select class="form-control" id="selEvent" name="selEvent">
+            <label for="selSoccerGame">Select a Soccer Game:</label>
+            <select class="form-control" id="selSoccerGame" name="selSoccerGame">
+                <option></option>
             </select>
-          </div>    
+          </div>
+          <div class="form-group col-sm-8">
+            <div class="row">
+              <div class="form-group col-sm-2">
+                  <img id="imgLocal" src='' width='80px'/>
+                  <h6 id="nameLocal">Team Local</h6>
+              </div>
+              <div class="row">
+                <div class="form-group col-sm-2">
+                    <h1 id="goalLocal">0</h1>
+                </div>
+                <div class="form-group col-sm-2">
+                    <h1>:</h1>
+                    <h2 id="currentTime" style="color: rgb(20, 238, 75);;">0</h2>
+                </div>
+                <div class="form-group col-sm-2">
+                    <h1 id="goalVisitor">0</h1>
+                </div>
+              </div>
+              <div class="form-group col-sm-2">
+                  <img id="imgVisitor" src='' width='80px'/>
+                  <h6 id="nameVisitor">Team Visitor</h6>
+              </div>             
+            </div>            
+          </div>   
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label for="selEvent">Select a Event:</label>
+                <select class="form-control" id="selEvent" name="selEvent">
+                    <option></option>
+                </select>
+              </div>
+            <div class="form-group col-sm-3">
+              <label class="container">
+                  <input   type="radio" name="radio" id="teamEventL" value="local"><label id="lblTl">Team Local</label>
+                  <span class="checkmark"></span>
+                </label>
+                <label class="container">
+                  <input type="radio" name="radio" id="teamEventV" value="visitor"><label id="lblTv">Team Visitor</label>
+                  <span class="checkmark"></span>
+                </label>
+            </div>               
+          
           <div class="form-group col-sm-3">
-            <label for="minute">Minute:</label>
-            <input type="number" class="form-control" id="minute" placeholder="Enter minute" name="minute">
-          </div> 
-          <div class="form-group col-sm-3">
-            <label for="selPlayerL">Select a Player(Team Local):</label>
-            <select class="form-control" id="selPlayerL" name="selPlayerL">
+            <label for="selPlayer">Select a Player:</label>
+            <select class="form-control" id="selPlayer" name="selPlayer">
+                <option></option>
             </select>
-          </div>    
+          </div>  
           <div class="form-group col-sm-3">
-            <label for="selPlayerV">Select a Player(Team Visitor):</label>
-            <select class="form-control" id="selPlayerV" name="selPlayerV">
-            </select>
-          </div>          
+              <label for="minute">Minute:</label>
+              <input type="number" class="form-control" id="minute" placeholder="Enter minute" name="minute">
+          </div>   
+                   
         </div>
         <div class="form-group row">
-          <label for="btnTeamL">Team Local: </label>
-        	<button  class="btn btn-primary col-sm-2" id="btnTeamL"  value="dd"></button>
-          <label for="btnTeamL">Team Visitor: </label>
-          <button  class="btn btn-primary col-sm-2" id="btnTeamV" value=""></button>
+        	<button  class="btn btn-primary col-sm-2" id="btnTeam"  value="dd">Add Event</button>
           
         </div>
       </form>
@@ -51,11 +155,75 @@
       <script>
         getSoccerGame();        
         getEvents();
+        var playerL,playerV,isLocal;
+        $("input[name='radio']").change(async function(){
+          $('#selPlayer').children('option:not(:first)').remove();
+          if ($(this).attr("id")==='teamEventL') {
+              playerL.forEach(addPlayer);
+              isLocal=true;
+          } else {
+            playerV.forEach(addPlayer);
+            isLocal=false;
+          }
+        });
+        //llena combos Jugadores
+        function addPlayer(player){
+            $("#selPlayer").append(`
+              <option value=${player._id}>${player.name}</option>`)
+        }
+        $("select#selSoccerGame").change(async function(){
+          let response = await fetch('/tournament_results/'+$("#selSoccerGame").val());
+          if (response.ok) {
+            let json =  response.json();
+            json.then(async (team)=>{
+              $("#btnTeamL").html(team.local_team.name);
+              $("#btnTeamL").val(team.local_team._id);
+              $("#imgLocal").attr("src",team.local_team.shield);
+              $("#nameLocal").html(team.local_team.name);
+              $("#goalLocal").html(team.local_goals);
+              $("#lblTl").text(team.local_team.name);
+              $("#teamEventL").val(team.local_team._id);
+             
+              $("#btnTeamV").html(team.visitor_team.name);
+              $("#btnTeamV").val(team.visitor_team._id);
+              $("#imgVisitor").attr("src",team.visitor_team.shield);
+              $("#nameVisitor").html(team.visitor_team.name);
+              $("#goalVisitor").html(team.visitor_goals);
+              $("#lblTv").html(team.visitor_team.name);
+              $("#teamEventV").val(team.visitor_team._id);
+
+              $("#currentTime").html(team.current_time);   
+              
+              let teamL = await fetch('/players/getByTeam/'+team.local_team._id);              
+              if (teamL.ok) {
+                let json =  teamL.json();
+                json.then(players=>{                                   
+                  playerL=players;
+                })
+              } else {
+                alert("HTTP-Error: " + response.status);
+              }  
+              let teamV = await fetch('/players/getByTeam/'+team.visitor_team._id);              
+              if (teamV.ok) {
+                let json =  teamV.json();
+                json.then(players=>{                                   
+                  playerV=players;
+                })
+              } else {
+                alert("HTTP-Error: " + response.status);
+              }             
+
+            })
+          } else {
+            alert("HTTP-Error: " + response.status);
+          } 
+        });
         var socket = io();
         $(function () {
-          $( "#btnTeamL" ).click(function(e) {
-            e.preventDefault();            
-            fetch('http://localhost:3000/detail_matchs/create', {
+          $( "#btnTeam" ).click(function(e) {
+            e.preventDefault(); 
+            alert(isLocal)           
+             fetch('/detail_matchs/create', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -63,9 +231,9 @@
               body: JSON.stringify({
               tournament_result: $("#selSoccerGame").val(), 
               type_event: $("#selEvent").val(), 
-              player: $("#selPlayerL").val(), 
+              player: $("#selPlayer").val(), 
               time: $("#minute").val(), 
-              isLocalEvent:true})
+              isLocalEvent:isLocal})
             });
             socket.emit('events', {
               tournament_result: $("#selSoccerGame").val(), 
@@ -73,19 +241,8 @@
               player: $("#selPlayerL").val(), 
               time: $("#minute").val(), 
               isLocalEvent:true});
-          });  
-          $( "#btnTeamV" ).click(function(e) {
-            e.preventDefault();
-
-            socket.emit('events', {
-              tournament_result: $("#selSoccerGame").val(), 
-              type_event: $("#selEvent").val(), 
-              player: $("#selPlayerV").val(), 
-              time: $("#minute").val(), 
-              isLocalEvent:false});
-          });          
+          });       
           socket.on('events', function(event){
-            console.log(event)
             $('#events').append($('<li>').text(
               'Evento: '+event.type_event
               +'; Minutoo: '+event.time
@@ -98,50 +255,20 @@
               <option value=${soccerGame._id}>${soccerGame.local_team.name} vs ${soccerGame.visitor_team.name}</option>`)
         }   
         function getSoccerGame(){
-            $.get('http://localhost:3000/tournament_results/get', (data) => {
-              data.forEach(addSoccerGame);
-              $("#btnTeamL").html(`${data[0].local_team.name}`);
-              $("#btnTeamL").val(`${data[0].local_team._id}`);
-              $("#btnTeamV").html(`${data[0].visitor_team.name}`);
-              $("#btnTeamV").val(`${data[0].visitor_team._id}`);
-              getPlayerL();
-              getPlayerV();
-              console.log($("#btnTeamL").html());
-            });
-            
-            
+          $.get('/tournament_results/getIsPlaying', (data) => {
+            data.forEach(addSoccerGame);                
+          });
         }
         //llena combos Eventos
         function addEvent(events){
-            $("#selEvent").append(`
-              <option value=${events.name}>${events.name}</option>`)
+          $("#selEvent").append(`
+            <option value=${events.name}>${events.name}</option>`)
         }   
         function getEvents(){            
-            $.get('http://localhost:3000/events/get', (data) => {
-              data.forEach(addEvent);
-            });
-        }
-        //llena combos Jugadores Locales
-        function addPlayerL(playerL){
-            $("#selPlayerL").append(`
-              <option value=${playerL._id}>${playerL.name}</option>`)
-        }   
-        function getPlayerL(){
-            $.get('http://localhost:3000/players/getByTeam/'+$("#btnTeamL").val(), (data) => {
-            data.forEach(addPlayerL);
-            });
-        }
-        //llena combos Jugadores Visitantes
-        function addPlayerV(playerV){
-            $("#selPlayerV").append(`
-              <option value=${playerV._id}>${playerV.name}</option>`)
-        }   
-        function getPlayerV(){
-            $.get('http://localhost:3000/players/getByTeam/'+$("#btnTeamV").val(), (data) => {
-            data.forEach(addPlayerV);
-            });
+          $.get('/events/get', (data) => {
+            data.forEach(addEvent);
+          });
         }
     </script>
-
 </body>
 </html>

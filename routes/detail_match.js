@@ -16,5 +16,8 @@ router.put('/:id/update', detail_match_controller.detail_match_update);
 
 router.delete('/:id/delete', detail_match_controller.detail_match_delete);
 
+router.get('/', function(req, res){
+  res.render('detailMatchs/index', { title: 'Detail Matchs' });
+});
 
 module.exports = router;

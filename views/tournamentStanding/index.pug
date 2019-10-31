@@ -19,10 +19,10 @@ block layout-content
             th total_points
         tbody
     script.
-      getTeams();  
+      getData();  
       $(function () {
         var socket = io();
-        socket.on('cambio', function(data){
+        socket.on('changeTournamentStand', function(data){
           $('#myTable tbody tr').remove();
             data.forEach(addRow);
           });
@@ -38,8 +38,8 @@ block layout-content
           <td>${data.total_points}</td>
           </tr>`);
         }
-      function getTeams(){
-        $.get('http://localhost:3000/tournament_standings/get', (data) => {
+      function getData(){
+        $.get('tournament_standings/get', (data) => {
           data.forEach(addRow);
         });
       }

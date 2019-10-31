@@ -17,6 +17,7 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/js', express.static(__dirname + '/node_modules/popper.js/dist'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/fontawesome', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free'));
 
 //Configuracion rutas
 const teamRoute = require('./routes/team'); // Imports routes for the team
@@ -49,22 +50,53 @@ io.on('connection', function(socket){
   });
 });
 
-let team = require('./controllers/teams');
-team.Team.watch().on('change', function(data){
-  var datos;
-  team.Team.find({},(err, teams)=> {
+let team = require('./controllers/teams').Team;
+team.watch().on('change', function(data){
+  team.find({},(err, teams)=> {
     if (err) console.log(err);
-    console.log(teams);
     io.emit('cambio', teams);
-  }).sort({position : 1});  
-  console.log(new Date(),'hubo un cambio en la tabla');
+  }).sort({position : -1});  
+  console.log(new Date(),'Hubo un cambio en la tabla teams');
+});
+
+let tournamentStanding = require('./controllers/tournament_standings').TournamentStanding;
+tournamentStanding.watch().on('change', function(data){
+  tournamentStanding.find({},(err, tournaments)=> {
+    if (err) console.log(err);
+    io.emit('changeTournamentStand', tournaments);
+  }).sort({total_points : -1}).populate('team');
+  console.log(new Date(),'Hubo un cambio en la tabla tournament_standings');
+});
+
+let tournamentResult = require('./controllers/tournament_results').TournamentResult;
+tournamentResult.watch().on('change', function(data){
+  tournamentResult.find({},(err, tournaments)=> {
+    if (err) console.error(err);
+    console.log(data);
+    if(data.current_time == 90){
+      console.log(data.current_time);
+    }
+    io.emit('changeTournamentResult', tournaments);
+  }).sort({current_time : 1}).populate(['local_team','visitor_team']);
+  console.log(new Date(),'Hubo un cambio en la tabla tournament_results');
 });
 /******************************************************/
+/* Timer **********************************************/
+function updateTimeMatch() {
+  console.log('Cant stop me now!');
+  // let get_is_playing = tournamentResult.get_is_playing();
+    tournamentResult.updateMany({ is_playing: true }, { $inc: { current_time: 1 } }, (err, data)=> {if (err) console.error(err);})
+    tournamentResult.updateMany({ is_playing: true, current_time: { $gte: 90 } }, { is_playing: false }, (err, data)=> {if (err) console.error(err);})
+}
 
+setInterval(updateTimeMatch, 10*1000);
+/******************************************************/
 
 http.listen(3000, function(){
     console.log('server is running on port :3000');
 });
+
+
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/views/index.html');

@@ -1,10 +1,10 @@
 const Team = require('../models/teams').TeamModel;
+module.exports.Team=Team;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
     res.send('Test controller Team');
 };
-module.exports.Team=Team;
 exports.createTeam=function(req, res){
     let team = new Team(req.body);
     team.save(function (err) {
