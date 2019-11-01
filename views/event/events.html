@@ -9,8 +9,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <style>
-      /* The container */
-      .container {
+     /* The container */
+     .container {
         display: block;
         position: relative;
         padding-left: 35px;
@@ -77,7 +77,107 @@
         border-radius: 50%;
         background: white;
       }
-      </style>
+  </style>
+   <style>
+      .mytext{
+          border:0;padding:10px;background:whitesmoke;
+      }
+      .text{
+          width:75%;display:flex;flex-direction:column;
+      }
+      .text > p:first-of-type{
+          width:100%;margin-top:0;margin-bottom:auto;line-height: 13px;font-size: 12px;
+      }
+      .text > p:last-of-type{
+          width:100%;text-align:right;color:silver;margin-bottom:-7px;margin-top:auto;
+      }
+      .text-l{
+          float:left;padding-right:10px;
+      }        
+      .text-r{
+          float:right;padding-left:10px;
+      }
+      .avatar{
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          width:25%;
+          float:left;
+          padding-right:10px;
+      }
+      .macro{
+          margin-top:5px;width:85%;border-radius:5px;padding:5px;display:flex;
+      }
+      .msj-rta{
+          float:right;background:whitesmoke;margin-left: 90px;
+      }
+      .msj{
+          float:left;background:white;
+      }
+      .frame{
+          background:#e0e0de;
+          height:450px;
+          overflow:hidden;
+          padding:0;
+      }
+      .frame > div:last-of-type{
+          position:absolute;bottom:0;width:100%;display:flex;
+      }
+      body > div > div > div:nth-child(2) > span{
+          background: whitesmoke;padding: 10px;font-size: 21px;border-radius: 50%;
+      }
+      body > div > div > div.msj-rta.macro{
+          margin:auto;margin-left:1%;
+      }
+      ul {
+          width:100%;
+          list-style-type: none;
+          padding:18px;
+          position:absolute;
+          bottom:47px;
+          display:flex;
+          flex-direction: column;
+          top:0;
+          overflow-y:scroll;
+      }
+      .msj:before{
+          width: 0;
+          height: 0;
+          content:"";
+          top:-5px;
+          left:-14px;
+          position:relative;
+          border-style: solid;
+          border-width: 0 13px 13px 0;
+          border-color: transparent #ffffff transparent transparent;            
+      }
+      .msj-rta:after{
+          width: 0;
+          height: 0;
+          content:"";
+          top:15px;
+          left:74px;
+          position:relative;
+          border-style: solid;
+          border-width: 13px 0 0 0;
+          border-color: whitesmoke transparent transparent transparent;           
+      }  
+      input:focus{
+          outline: none;
+      }        
+      ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+          color: #d4d4d4;
+      }
+      ::-moz-placeholder { /* Firefox 19+ */
+          color: #d4d4d4;
+      }
+      :-ms-input-placeholder { /* IE 10+ */
+          color: #d4d4d4;
+      }
+      :-moz-placeholder { /* Firefox 18- */
+          color: #d4d4d4;
+      }  
+  </style>
 </head>
 <body>
 	<div class="container">
@@ -102,9 +202,9 @@
                 </div>
                 <div class="form-group col-sm-2">
                     <h1>:</h1>
-                    <h2 id="currentTime" style="color: rgb(20, 238, 75);;">0</h2>
+                    <h2 id="currentTime" style="color: rgb(20, 238, 75);margin-left: -4px;">0</h2>
                 </div>
-                <div class="form-group col-sm-2">
+                <div class="form-group col-sm-2 " style="margin-left: -12px;">
                     <h1 id="goalVisitor">0</h1>
                 </div>
               </div>
@@ -150,12 +250,45 @@
           
         </div>
       </form>
-      <ul id="events"></ul>
+      <div class="col-sm-10 col-sm-offset-2 frame">
+          <ul></ul>
+          <div>
+      </div>  
+      <script>
+         function insertDetail(event){        
+          if (event.isLocalEvent){
+            $("ul").append(`
+            <li style="width:50%">
+              <div class="msj macro">
+              <div class="avatar"><img class="img-circle" style="width:80%;height:80%" src="${event.player.team.shield}" /></div>
+                <div class="text text-l">
+                  <p>${event.type_event}</p>
+                  <p>${event.player.name}</p>
+                  <p><small>Minuto: ${event.time}</small></p>
+                </div>
+              </div>
+            </li>`)                   
+          }else{
+            $("ul").append(`
+            <li style="width:50%;margin-left:40%">
+              <div class="msj-rta macro">
+                <div class="text text-r">
+                  <p>${event.type_event}</p>
+                  <p>${event.player.name}</p>
+                  <p><small>Minuto: ${event.time}</small></p>
+                </div>
+              <div class="avatar" style="padding:0px 0px 0px 0px !important"><img class="img-circle" style="width:80%;height:80%;" src="${event.player.team.shield}" /></div>
+            </li>`)
+          }          
+        }      
+      </script>
       <script src="/socket.io/socket.io.js"></script>
       <script>
+        var socket = io();
         getSoccerGame();        
         getEvents();
-        var playerL,playerV,isLocal;
+        var playerL,playerV,isLocal,shieldL,shieldV;
+        //Seleccionar Jugador
         $("input[name='radio']").change(async function(){
           $('#selPlayer').children('option:not(:first)').remove();
           if ($(this).attr("id")==='teamEventL') {
@@ -166,12 +299,30 @@
             isLocal=false;
           }
         });
+
+        function resetEvents(){
+          $("ul").empty();
+        }
         //llena combos Jugadores
         function addPlayer(player){
             $("#selPlayer").append(`
               <option value=${player._id}>${player.name}</option>`)
         }
+        //Selecciona partidos en juego
         $("select#selSoccerGame").change(async function(){
+          resetEvents();
+          let details = await fetch('/detail_matchs/getByTournamentResult/'+$("#selSoccerGame").val());
+          if (details.ok) {
+            let json =  details.json();
+            json.then(async (details)=>{   
+              details.forEach(detail => {
+                insertDetail(detail.isLocalEvent,detail.type_event,detail.time,detail.player.name,detail.player.team.shield);
+              });
+              
+            })
+          } else {
+            alert("HTTP-Error: " + details.status);
+          } 
           let response = await fetch('/tournament_results/'+$("#selSoccerGame").val());
           if (response.ok) {
             let json =  response.json();
@@ -183,6 +334,7 @@
               $("#goalLocal").html(team.local_goals);
               $("#lblTl").text(team.local_team.name);
               $("#teamEventL").val(team.local_team._id);
+              shieldL=team.local_team.shield;
              
               $("#btnTeamV").html(team.visitor_team.name);
               $("#btnTeamV").val(team.visitor_team._id);
@@ -191,13 +343,14 @@
               $("#goalVisitor").html(team.visitor_goals);
               $("#lblTv").html(team.visitor_team.name);
               $("#teamEventV").val(team.visitor_team._id);
+              shieldV=team.visitor_team.shield;
 
               $("#currentTime").html(team.current_time);   
               
               let teamL = await fetch('/players/getByTeam/'+team.local_team._id);              
               if (teamL.ok) {
                 let json =  teamL.json();
-                json.then(players=>{                                   
+                json.then(players=>{                                  
                   playerL=players;
                 })
               } else {
@@ -211,18 +364,20 @@
                 })
               } else {
                 alert("HTTP-Error: " + response.status);
-              }             
-
+              } 
             })
           } else {
             alert("HTTP-Error: " + response.status);
           } 
         });
-        var socket = io();
+        
+       
         $(function () {
           $( "#btnTeam" ).click(function(e) {
-            e.preventDefault();     
-           fetch('/detail_matchs/create', {
+            e.preventDefault();   
+            var player= $('select[name="selPlayer"] option:selected').text();
+            var shield=isLocal?shieldL:shieldV; 
+            fetch('/detail_matchs/create', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -253,26 +408,18 @@
                 body: JSON.stringify(data)
               });
             }
-            
-            socket.emit('events', {
-              tournament_result: $("#selSoccerGame").val(), 
-              type_event: $("#selEvent").val(), 
-              player: $("#selPlayerL").val(), 
-              time: $("#minute").val(), 
-              isLocalEvent:true});
-          });       
-          socket.on('events', function(event){
-            $('#events').append($('<li>').text(
-              'Evento: '+event.type_event
-              +'; Minutoo: '+event.time
-              +'; Local: '+event.isLocalEvent));
-          });
-        });        
+          });  
+        });   
+        //Escucha cambios en 
+        socket.on('changeDetailMatch', function(event){
+          insertDetail(event);
+        });
         //llena combo Partidos
         function addSoccerGame(soccerGame){
             $("#selSoccerGame").append(`
               <option value=${soccerGame._id}>${soccerGame.local_team.name} vs ${soccerGame.visitor_team.name}</option>`)
-        }   
+        } 
+        //obtiene Partidos en juego  
         function getSoccerGame(){
           $.get('/tournament_results/getIsPlaying', (data) => {
             data.forEach(addSoccerGame);                
@@ -282,7 +429,8 @@
         function addEvent(events){
           $("#selEvent").append(`
             <option value=${events.name}>${events.name}</option>`)
-        }   
+        }  
+        //obtiene Eventos 
         function getEvents(){            
           $.get('/events/get', (data) => {
             data.forEach(addEvent);

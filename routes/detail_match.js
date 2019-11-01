@@ -8,9 +8,11 @@ router.get('/test', detail_match_controller.test);
 
 router.get('/get', detail_match_controller.get);
 
+router.get('/:id', detail_match_controller.detail_match_details);
+
 router.post('/create', detail_match_controller.createDetailMatch);
 
-router.get('/:id', detail_match_controller.detail_match_details);
+router.get('/getByTournamentResult/:tournament_result', detail_match_controller.getByTournamentResult);
 
 router.put('/:id/update', detail_match_controller.detail_match_update);
 

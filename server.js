@@ -81,11 +81,37 @@ tournamentResult.watch().on('change', function(data){
   }).sort({current_time : 1}).populate(['local_team','visitor_team']);
   console.log(new Date(),'Hubo un cambio en la tabla tournament_results');
 });
+var router = express.Router();
 
 let detail_match = require('./controllers/detail_match').DetailMatch;
 detail_match.watch().on('change', function(data){
-  console.log(JSON.stringify(data));
-  detail_match.find({},(err, detail_matchs)=> {
+  //console.log(JSON.stringify(data));
+  console.log(JSON.stringify(data))
+  detail_match.findById(data.documentKey._id, (err, detail_match) =>{
+          if (err) return next(err);
+          console.log(JSON.stringify(detail_match))
+          io.emit('changeDetailMatch', detail_match);
+      }).populate({
+        path: 'tournament_result',
+        populate: { path: 'local_team' }
+      }).populate({
+        path: 'tournament_result',
+        populate: { path: 'visitor_team' }
+      }).populate({
+        path: 'detail_match',
+        populate: { path: 'team' }
+      }).populate({
+        path: 'player',
+        populate: { path: 'team' }
+      });
+
+  
+ /* 
+  let details =  fetch('/detail_matchs/'+data.fullDocument._id).then(
+    detail).json().then(data=>{
+      console.log(data)
+    });
+ detail_match.find({},(err, detail_matchs)=> {
     if (err) console.log(err);
     io.emit('changeTournamentResult', detail_matchs);
   }).populate({
@@ -97,19 +123,20 @@ detail_match.watch().on('change', function(data){
   }).populate({
     path: 'detail_match',
     populate: { path: 'team' }
-  }).populate('player');
+  }).populate('player'); */
   console.log(new Date(),'Hubo un cambio en la tabla detail_match');
 });
 /******************************************************/
 /* Timer **********************************************/
-function updateTimeMatch() {
+/* function updateTimeMatch() {
   console.log('Cant stop me now!');
   // let get_is_playing = tournamentResult.get_is_playing();
     tournamentResult.updateMany({ is_playing: true }, { $inc: { current_time: 1 } }, (err, data)=> {if (err) console.error(err);})
     tournamentResult.updateMany({ is_playing: true, current_time: { $gte: 90 } }, { is_playing: false }, (err, data)=> {if (err) console.error(err);})
 }
-
+ 
 setInterval(updateTimeMatch, 10*1000);
+*/
 /******************************************************/
 
 http.listen(3000, function(){
@@ -123,5 +150,9 @@ app.get('/', function(req, res){
 });
 
 app.get('/event', function(req, res){
-  res.sendFile(__dirname + '/views/events.html');
+  res.sendFile(__dirname + '/views/event/events.html');
+});
+
+app.get('/prueba', function(req, res){
+  res.sendFile(__dirname + '/views/prueba.html');
 });

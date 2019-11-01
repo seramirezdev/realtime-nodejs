@@ -41,7 +41,7 @@ exports.get_is_playing=function(req, res) {
         return reject(err)
     }        
     res.send(tournamentResult)
-  })
+  }).populate(['local_team','visitor_team'])
 };
 
 exports.tournament_result_update = function (req, res) {
