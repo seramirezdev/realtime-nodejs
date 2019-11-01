@@ -85,45 +85,13 @@ var router = express.Router();
 
 let detail_match = require('./controllers/detail_match').DetailMatch;
 detail_match.watch().on('change', function(data){
-  //console.log(JSON.stringify(data));
-  console.log(JSON.stringify(data))
   detail_match.findById(data.documentKey._id, (err, detail_match) =>{
           if (err) return next(err);
-          console.log(JSON.stringify(detail_match))
           io.emit('changeDetailMatch', detail_match);
-      }).populate({
-        path: 'tournament_result',
-        populate: { path: 'local_team' }
-      }).populate({
-        path: 'tournament_result',
-        populate: { path: 'visitor_team' }
-      }).populate({
-        path: 'detail_match',
-        populate: { path: 'team' }
       }).populate({
         path: 'player',
         populate: { path: 'team' }
       });
-
-  
- /* 
-  let details =  fetch('/detail_matchs/'+data.fullDocument._id).then(
-    detail).json().then(data=>{
-      console.log(data)
-    });
- detail_match.find({},(err, detail_matchs)=> {
-    if (err) console.log(err);
-    io.emit('changeTournamentResult', detail_matchs);
-  }).populate({
-    path: 'tournament_result',
-    populate: { path: 'local_team' }
-  }).populate({
-    path: 'tournament_result',
-    populate: { path: 'visitor_team' }
-  }).populate({
-    path: 'detail_match',
-    populate: { path: 'team' }
-  }).populate('player'); */
   console.log(new Date(),'Hubo un cambio en la tabla detail_match');
 });
 /******************************************************/
