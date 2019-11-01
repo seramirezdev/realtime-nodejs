@@ -14,20 +14,7 @@ exports.createTournamentResult=function(req, res){
     }
     res.send('TournamentResult created successfully')
   })
-}
-/* 
-exports.getTournamentResult=function() {
-  return new Promise((resolve, reject) => {
-      TournamentResult.find((err, docs) => {
-      if(err) {
-          console.error(err)
-          return reject(err)
-      }        
-      resolve(docs)
-      }).populate('local_team').populate('visitor_team')
-  })
-} 
- */
+};
 
 exports.get=function(req, res) {
   TournamentResult.find((err, tournamentResult) => {
@@ -36,7 +23,7 @@ exports.get=function(req, res) {
         return reject(err)
     }        
     res.send(tournamentResult)
-  }).populate(['local_team','visitor_team'])
+  }).sort({current_time : 1}).populate(['local_team','visitor_team'])
 };
 
 
@@ -54,7 +41,7 @@ exports.get_is_playing=function(req, res) {
         return reject(err)
     }        
     res.send(tournamentResult)
-  }).populate(['local_team','visitor_team'])
+  })
 };
 
 exports.tournament_result_update = function (req, res) {
