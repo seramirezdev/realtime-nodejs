@@ -221,9 +221,8 @@
         var socket = io();
         $(function () {
           $( "#btnTeam" ).click(function(e) {
-            e.preventDefault(); 
-            alert(isLocal)           
-             fetch('/detail_matchs/create', {
+            e.preventDefault();     
+           fetch('/detail_matchs/create', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -235,6 +234,26 @@
               time: $("#minute").val(), 
               isLocalEvent:isLocal})
             });
+            var data;
+            if ($("#selEvent").val()==='GOAL') {
+              if (isLocal) {
+                data={
+                  local_goals:parseInt($("#goalLocal").html())+1
+                }
+              } else {
+                data={
+                  local_goals:parseInt($("#goalVisitor").html())+1
+                }
+              }
+              fetch('/tournament_results/'+$("#selSoccerGame").val()+'/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+              });
+            }
+            
             socket.emit('events', {
               tournament_result: $("#selSoccerGame").val(), 
               type_event: $("#selEvent").val(), 

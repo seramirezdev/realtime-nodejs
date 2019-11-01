@@ -1,4 +1,5 @@
 const DetailMatch = require('../models/detail_match').DetailMatchModel;
+module.exports.DetailMatch=DetailMatch;
 
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {

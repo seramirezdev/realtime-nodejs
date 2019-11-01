@@ -70,11 +70,31 @@ tournamentStanding.watch().on('change', function(data){
 
 let tournamentResult = require('./controllers/tournament_results').TournamentResult;
 tournamentResult.watch().on('change', function(data){
+  console.log(JSON.stringify(data))
   tournamentResult.find({},(err, tournaments)=> {
     if (err) console.log(err);
     io.emit('changeTournamentResult', tournaments);
   }).sort({current_time : 1}).populate(['local_team','visitor_team']);
   console.log(new Date(),'Hubo un cambio en la tabla tournament_results');
+});
+
+let detail_match = require('./controllers/detail_match').DetailMatch;
+detail_match.watch().on('change', function(data){
+  console.log(JSON.stringify(data));
+  detail_match.find({},(err, detail_matchs)=> {
+    if (err) console.log(err);
+    io.emit('changeTournamentResult', detail_matchs);
+  }).populate({
+    path: 'tournament_result',
+    populate: { path: 'local_team' }
+  }).populate({
+    path: 'tournament_result',
+    populate: { path: 'visitor_team' }
+  }).populate({
+    path: 'detail_match',
+    populate: { path: 'team' }
+  }).populate('player');
+  console.log(new Date(),'Hubo un cambio en la tabla detail_match');
 });
 /******************************************************/
 
@@ -89,5 +109,8 @@ app.get('/', function(req, res){
 
 app.get('/event', function(req, res){
   res.sendFile(__dirname + '/views/events.html');
+});
+app.get('/prueba', function(req, res){
+  res.sendFile(__dirname + '/views/prueba.html');
 });
 
