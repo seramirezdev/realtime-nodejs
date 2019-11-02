@@ -25,6 +25,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "99:1c:2a:31:45:3e:49:04:39:e0:89:e0:5e:c4:72:9f"
+      - checkout
       - run:
           name: Deploy to GCP for SSH
           command: |
