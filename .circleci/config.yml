@@ -30,7 +30,6 @@ jobs:
           name: Deploy to GCP for SSH
           command: |
             pwd
-            cd ..
             ls -la
             ssh $SSH_USER@$SSH_HOST 'bash -s < ./scripts/deploy.sh'
 workflows:
