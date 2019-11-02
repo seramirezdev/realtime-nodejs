@@ -29,7 +29,8 @@ jobs:
           name: Deploy to GCP for SSH
           command: |
             pwd
-            ssh $SSH_USER@$SSH_HOST 'bash -s < ./../scripts/deploy.sh'
+            ls -la
+            ssh $SSH_USER@$SSH_HOST 'bash -s < ./scripts/deploy.sh'
 workflows:
   version: 2
   build-and-deploy:
