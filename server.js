@@ -70,13 +70,9 @@ tournamentStanding.watch().on('change', function(data){
 
 let tournamentResult = require('./controllers/tournament_results').TournamentResult;
 tournamentResult.watch().on('change', function(data){
-  console.log(JSON.stringify(data))
+  //console.log(JSON.stringify(data))
   tournamentResult.find({},(err, tournaments)=> {
     if (err) console.error(err);
-    console.log(data);
-    if(data.current_time == 90){
-      console.log(data.current_time);
-    }
     io.emit('changeTournamentResult', tournaments);
   }).sort({current_time : 1}).populate(['local_team','visitor_team']);
   console.log(new Date(),'Hubo un cambio en la tabla tournament_results');
@@ -96,15 +92,13 @@ detail_match.watch().on('change', function(data){
 });
 /******************************************************/
 /* Timer **********************************************/
-/* function updateTimeMatch() {
-  console.log('Cant stop me now!');
+function updateTimeMatch() {
+  //console.log('Cant stop me now!');
   // let get_is_playing = tournamentResult.get_is_playing();
     tournamentResult.updateMany({ is_playing: true }, { $inc: { current_time: 1 } }, (err, data)=> {if (err) console.error(err);})
     tournamentResult.updateMany({ is_playing: true, current_time: { $gte: 90 } }, { is_playing: false }, (err, data)=> {if (err) console.error(err);})
 }
- 
 setInterval(updateTimeMatch, 10*1000);
-*/
 /******************************************************/
 
 http.listen(3000, function(){
