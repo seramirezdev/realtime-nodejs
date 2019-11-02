@@ -30,7 +30,9 @@ jobs:
           name: Deploy to GCP for SSH
           command: |
             cd ./scripts
+            ls -la
             sudo chmod +x ./deploy.sh
+            ls -la
             ssh $SSH_USER@$SSH_HOST 'bash -i < ./deploy.sh'
 workflows:
   version: 2
