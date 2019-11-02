@@ -28,7 +28,8 @@ jobs:
       - checkout
       - run:
           name: Deploy to GCP for SSH
-          run: ssh $SSH_USER@$SSH_HOST 'bash < ./deploy.sh'
+          command: |
+            ssh $SSH_USER@$SSH_HOST './deploy.sh'
 workflows:
   version: 2
   build-and-deploy:
