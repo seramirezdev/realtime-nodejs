@@ -19,11 +19,15 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
   deploy-job:
+    machine:
+      enabled: true
     steps:
       - add_ssh_keys:
           fingerprints:
             - "99:1c:2a:31:45:3e:49:04:39:e0:89:e0:5e:c4:72:9f"
   deploy:
+    machine:
+      enabled: true
     steps:
       - run:
           name: Deploy to GCP for SSH
