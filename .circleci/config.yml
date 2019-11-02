@@ -31,7 +31,7 @@ jobs:
           command: |
             cd ./scripts
             ls -la
-            sudo chmod +x ./deploy.sh
+            sudo chmod 777 ./deploy.sh
             ls -la
             ssh $SSH_USER@$SSH_HOST 'bash -i < ./deploy.sh'
 workflows:
